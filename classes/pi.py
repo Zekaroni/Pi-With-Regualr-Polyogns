@@ -9,4 +9,4 @@ class PiFromPolygons:
     
     @property
     def pi(self):
-        return (self._interior_polygon.area + self._exterior_polygon) / 2
+        return (self._interior_polygon.area + self._exterior_polygon.area) / 2
