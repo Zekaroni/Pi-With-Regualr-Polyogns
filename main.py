@@ -5,11 +5,11 @@ from pygame_widgets.textbox import TextBox
 
 from classes.pi import PiFromPolygons as CreatePolygon
 
-# NOTE: Know error when launching on laptop (Ubuntu), the screen starts not rendered until slider update
+# BUG: When launching on laptop (Ubuntu), the screen starts not rendered until slider update
 
 class Window():
     def __init__(self):
-        self.NUM_OF_SHAPES = 500 # 2121 needed for 6 precision
+        self.NUM_OF_SHAPES = 500 # 2121 needed for 6 point precision
         self.POLYGONS = [CreatePolygon(i) for i in range(3, self.NUM_OF_SHAPES+1)] # List of all polygons and verticies
         self.PRIMARY_COLOUR = ((159, 175, 189)) # (r,b,g)
         self.INNER_COLOUR = (89,197,219) # TODO
