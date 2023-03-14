@@ -88,7 +88,7 @@ class Window():
 
     def DrawShapes(self):
         self.WINDOW.fill(self.PRIMARY_COLOUR)
-        self.active_polygon_index = 0 if self._slider_value == 0 else round(self._slider_value ** (self._slider_value/2121)) # TODO: Make logarithmic
+        self.active_polygon_index = 0 if self._slider_value == 0 else round(self._slider_value ** (self._slider_value/(self.NUM_OF_SHAPES-3))) # TODO: Make logarithmic
         self.active_polygons = self.POLYGONS[self.active_polygon_index]
 
         self.adjusted_vertices = [
