@@ -1,51 +1,161 @@
+import pygame as PYGAME
 import pygame_widgets
-import pygame
 from pygame_widgets.slider import Slider
 from pygame_widgets.textbox import TextBox
 
-from classes.pi import PiFromPolygons as pi
+from classes.pi import PiFromPolygons as CreatePolygon
 
-pygame.init()
-win = pygame.display.set_mode((1000, 600))
+class Window():
+    def __init__(self):
+        self.NUM_OF_SHAPES = 2121
+        self.POLYGONS = [CreatePolygon(i) for i in range(3, self.NUM_OF_SHAPES+1)] # List of all polygons and verticies
+        self.PRIMARY_COLOUR = ((159, 175, 189)) # (r,b,g)
+        self.INNER_COLOUR = (89,197,219) # TODO
+        self.OUTER_COLOUR = (74,104,188)
+        self.CIRCLE_COLOUR = (0,0,0)
+        self.LINE_WIDTH = 3
+        PYGAME.init()
+        self.WINDOW = PYGAME.display.set_mode((0,0),PYGAME.FULLSCREEN)
+        self.SCREEN_SIZE = self.WINDOW.get_size() # Assumes the user will not change the size of the window
+        self.CENTER = (self.SCREEN_SIZE[0]/2, self.SCREEN_SIZE[1]/2) # Center of the screen
+        self.SCALE = round(self.SCREEN_SIZE[0]/8)
+        self.WINDOW.fill(self.PRIMARY_COLOUR)
+        self._current_sides = 0
+        self._slider_value = 0
 
-slider = Slider(win, 100, 500, 800, 40, min=0, max=10, step=1)
-output = TextBox(win, 475, 550, 50, 50, fontSize=30)
+    def DrawUI(self):
+        self.slider = Slider(
+                    self.WINDOW,
+                    self.SCREEN_SIZE[1]/20, # x
+                    self.SCREEN_SIZE[1]-round(self.SCREEN_SIZE[0]/20), # y
+                    self.SCREEN_SIZE[0]-round(self.SCREEN_SIZE[0]/17.5), # width
+                    round(self.SCREEN_SIZE[0]/30), # height
+                    min=0,
+                    max=self.NUM_OF_SHAPES-3,
+                    step=1,
+                    initial=0
+                )
+        self.label_names_box = TextBox(
+                    self.WINDOW,
+                    round(self.SCREEN_SIZE[0]/2)-round((self.SCREEN_SIZE[0]/7.75)/2),
+                    0,
+                    self.SCREEN_SIZE[0]/7.75,
+                    self.SCREEN_SIZE[0]/50,
+                    fontSize=round(self.SCREEN_SIZE[0]/64)
+                )
+        self.inbtween_values_box = TextBox(
+                    self.WINDOW,
+                    round(self.SCREEN_SIZE[0]/2)-round((self.SCREEN_SIZE[0]/7.75)/2),
+                    round(self.SCREEN_SIZE[1]/30),
+                    self.SCREEN_SIZE[0]/7.75,
+                    self.SCREEN_SIZE[0]/50,
+                    fontSize=round(self.SCREEN_SIZE[0]/64)
+                )
+        self.pi_average_box = TextBox(
+                    self.WINDOW,
+                    round(self.SCREEN_SIZE[0]/2)-round((self.SCREEN_SIZE[0]/10)/2),
+                    round(self.SCREEN_SIZE[1]/15),
+                    self.SCREEN_SIZE[0]/10,
+                    self.SCREEN_SIZE[0]/50,
+                    fontSize=round(self.SCREEN_SIZE[0]/64)
+                )
+        self.side_amount_output_box = TextBox(
+                    self.WINDOW,
+                    round(self.SCREEN_SIZE[0]/2)-25,
+                    round(self.SCREEN_SIZE[1])-round(self.SCREEN_SIZE[1]/7.5),
+                    self.SCREEN_SIZE[0]/30,
+                    self.SCREEN_SIZE[0]/50,
+                    fontSize=round(self.SCREEN_SIZE[0]/64)
+                )
+        self.radius_box = TextBox(
+                    self.WINDOW,
+                    self.CENTER[0],
+                    self.CENTER[1]+self.CENTER[0]/100,
+                    self.SCREEN_SIZE[0]/30,
+                    self.SCREEN_SIZE[0]/50,
+                    fontSize=round(self.SCREEN_SIZE[0]/64)
+                )
+        
+        self.label_names_box.disable() # Act as label instead of textbox
+        self.inbtween_values_box.disable()
+        self.pi_average_box.disable()
+        self.side_amount_output_box.disable() 
+        self.radius_box.disable()
+        
+        self.DrawShapes()
 
-output.disable()  # Act as label instead of textbox
+    def DrawShapes(self):
+        self.WINDOW.fill(self.PRIMARY_COLOUR)
+        self.active_polygons = self.POLYGONS[self._slider_value]
 
-P = [pi(i) for i in range(3, 100)]
-
-center = (300, 250)
-scale = 150
-
-while True:
-    events = pygame.event.get()
-    for event in events:
-        if event.type == pygame.QUIT:
-            pygame.quit()
-            run = False
-            quit()
-
-    win.fill((255, 255, 255))
-
-    p = P[slider.getValue()]
-
-    adjusted_vertices = [
+        self.adjusted_vertices = [
         [
             [
-                center[i] + scale * vertex[i] for i in range(2)
+                self.CENTER[i] + self.SCALE * vertex[i] for i in range(2)
             ]
             for vertex in polygon.vertices
         ]
-        for polygon in [p._interior_polygon, p._exterior_polygon]
-    ]
+        for polygon in [self.active_polygons._interior_polygon, self.active_polygons._exterior_polygon]
+        ]
+        # Drawing
+        
+        PYGAME.draw.circle( # Main circle
+                        self.WINDOW, # Surface
+                        self.CIRCLE_COLOUR, # Colour
+                        self.CENTER, # Cords
+                        self.SCALE, # Scale
+                        self.LINE_WIDTH # Line Width
+                    )
+        PYGAME.draw.circle( # Center dot
+                        self.WINDOW,
+                        self.CIRCLE_COLOUR,
+                        (self.SCREEN_SIZE[0]/2,self.SCREEN_SIZE[1]/2),
+                        self.SCALE,
+                        1 
+                    )
+        PYGAME.draw.line( # Radius
+                        self.WINDOW,
+                        self.CIRCLE_COLOUR,
+                        self.CENTER,
+                        (self.CENTER[0]+self.SCALE,self.CENTER[1]),
+                        self.LINE_WIDTH
+                    )
+        PYGAME.draw.polygon( # Inner polygon
+                        self.WINDOW, # Surface
+                        self.INNER_COLOUR, # Colour
+                        self.adjusted_vertices[0], # Verticies of points
+                        self.LINE_WIDTH # Line Width
+                    )
+        PYGAME.draw.polygon( # Outer polygon
+                        self.WINDOW,
+                        self.OUTER_COLOUR,
+                        self.adjusted_vertices[1],
+                        self.LINE_WIDTH
+                    )
 
-    # circle
-    pygame.draw.circle(win, (0, 0, 0), (300, 250), 150, 3)
-    pygame.draw.polygon(win, (0, 0, 0), adjusted_vertices[0], 3)
-    pygame.draw.polygon(win, (0, 0, 0), adjusted_vertices[1], 3)
+        self.label_names_box.setText(f"Inner Area    Outer Area")
+        self.inbtween_values_box.setText(f"{format(round(self.active_polygons._interior_polygon.area, 6),'.6f')} < π < {format(round(self.active_polygons._exterior_polygon.area, 6), '.6f')}")
+        self.pi_average_box.setText(f"Average: {format(self.active_polygons.pi,'.6f')}")
+        self.side_amount_output_box.setText(f"{str(self._slider_value + 3).rjust(4)}")
+        self.radius_box.setText(f"r = 1")
+        self._current_sides = self._slider_value
 
-    output.setText(slider.getValue() + 3)
+    def start(self):
+        self.DrawUI()
+        while True:
+            events = PYGAME.event.get()
+            for event in events:
+                if event.type == PYGAME.QUIT:
+                    PYGAME.quit()
+                    quit()
+            
+            self._slider_value = self.slider.getValue()
+            if self._slider_value != self._current_sides:
+                self.DrawShapes()
 
-    pygame_widgets.update(events)
-    pygame.display.update()
+            pygame_widgets.update(events)
+            PYGAME.display.update()
+
+if __name__ == "__main__":
+    gui = Window()
+    gui.start()
