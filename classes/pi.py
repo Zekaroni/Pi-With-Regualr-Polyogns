@@ -1,5 +1,5 @@
 import math
-from polygon import RegularPolygon
+from classes.polygon import RegularPolygon
 
 class PiFromPolygons:
     def __init__(self, num_sides):
