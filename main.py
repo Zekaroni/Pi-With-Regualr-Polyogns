@@ -5,9 +5,11 @@ from pygame_widgets.textbox import TextBox
 
 from classes.pi import PiFromPolygons as CreatePolygon
 
+# NOTE: Know error when launching on laptop (Ubuntu), the screen starts not rendered until slider update
+
 class Window():
     def __init__(self):
-        self.NUM_OF_SHAPES = 2121
+        self.NUM_OF_SHAPES = 500 # 2121 needed for 6 precision
         self.POLYGONS = [CreatePolygon(i) for i in range(3, self.NUM_OF_SHAPES+1)] # List of all polygons and verticies
         self.PRIMARY_COLOUR = ((159, 175, 189)) # (r,b,g)
         self.INNER_COLOUR = (89,197,219) # TODO
@@ -20,7 +22,7 @@ class Window():
         self.CENTER = (self.SCREEN_SIZE[0]/2, self.SCREEN_SIZE[1]/2) # Center of the screen
         self.SCALE = round(self.SCREEN_SIZE[0]/8)
         self.WINDOW.fill(self.PRIMARY_COLOUR)
-        self._current_sides = 0
+        self._old_slider_value = 0
         self._slider_value = 0
 
     def DrawUI(self):
@@ -86,7 +88,8 @@ class Window():
 
     def DrawShapes(self):
         self.WINDOW.fill(self.PRIMARY_COLOUR)
-        self.active_polygons = self.POLYGONS[self._slider_value]
+        self.active_polygon_index = 0 if self._slider_value == 0 else round(self._slider_value) # TODO: Make logarithmic
+        self.active_polygons = self.POLYGONS[self.active_polygon_index]
 
         self.adjusted_vertices = [
         [
@@ -97,8 +100,8 @@ class Window():
         ]
         for polygon in [self.active_polygons._interior_polygon, self.active_polygons._exterior_polygon]
         ]
-        # Drawing
         
+        # Drawing objects
         PYGAME.draw.circle( # Main circle
                         self.WINDOW, # Surface
                         self.CIRCLE_COLOUR, # Colour
@@ -136,9 +139,9 @@ class Window():
         self.label_names_box.setText(f"Inner Area    Outer Area")
         self.inbtween_values_box.setText(f"{format(round(self.active_polygons._interior_polygon.area, 6),'.6f')} < π < {format(round(self.active_polygons._exterior_polygon.area, 6), '.6f')}")
         self.pi_average_box.setText(f"Average: {format(self.active_polygons.pi,'.6f')}")
-        self.side_amount_output_box.setText(f"{str(self._slider_value + 3).rjust(4)}")
+        self.side_amount_output_box.setText(f"{str(self.active_polygon_index + 3).rjust(4)}")
         self.radius_box.setText(f"r = 1")
-        self._current_sides = self._slider_value
+        self._old_slider_value = self._slider_value
 
     def start(self):
         self.DrawUI()
@@ -150,7 +153,7 @@ class Window():
                     quit()
             
             self._slider_value = self.slider.getValue()
-            if self._slider_value != self._current_sides:
+            if self._slider_value != self._old_slider_value:
                 self.DrawShapes()
 
             pygame_widgets.update(events)
