@@ -9,7 +9,7 @@ from classes.pi import PiFromPolygons as CreatePolygon
 
 class Window():
     def __init__(self):
-        self.NUM_OF_SHAPES = 500 # 2121 needed for 6 point precision
+        self.NUM_OF_SHAPES = 2121 # 2121 needed for 6 point precision
         self.POLYGONS = [CreatePolygon(i) for i in range(3, self.NUM_OF_SHAPES+1)] # List of all polygons and verticies
         self.PRIMARY_COLOUR = ((159, 175, 189)) # (r,b,g)
         self.INNER_COLOUR = (89,197,219) # TODO
@@ -88,7 +88,7 @@ class Window():
 
     def DrawShapes(self):
         self.WINDOW.fill(self.PRIMARY_COLOUR)
-        self.active_polygon_index = 0 if self._slider_value == 0 else round(self._slider_value) # TODO: Make logarithmic
+        self.active_polygon_index = 0 if self._slider_value == 0 else round(self._slider_value ** (self._slider_value/2121)) # TODO: Make logarithmic
         self.active_polygons = self.POLYGONS[self.active_polygon_index]
 
         self.adjusted_vertices = [
