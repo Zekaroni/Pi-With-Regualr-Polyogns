@@ -6,6 +6,7 @@ from pygame_widgets.textbox import TextBox
 from classes.pi import PiFromPolygons as CreatePolygon
 
 # BUG: When launching on laptop (Ubuntu), the screen starts not rendered until slider update
+# BUG: Crashes on Raspberian
 
 class Window():
     def __init__(self):
@@ -123,6 +124,7 @@ class Window():
                         (self.CENTER[0]+self.SCALE,self.CENTER[1]),
                         self.LINE_WIDTH
                     )
+        # TODO: Draw a line from the center to create the triangle
         PYGAME.draw.polygon( # Inner polygon
                         self.WINDOW, # Surface
                         self.INNER_COLOUR, # Colour
