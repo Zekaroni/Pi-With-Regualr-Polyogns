@@ -20,6 +20,7 @@ if not __found_pygame: system('pip install pygame'); import pygame as PYGAME
 if not __found_pygame_widgets: system('pip install pygame_widgets'); import pygame_widgets
 del __found_pygame, __found_pygame_widgets, system
 
+import math
 from pygame_widgets.slider import Slider
 from pygame_widgets.textbox import TextBox
 
@@ -47,9 +48,9 @@ class Window():
         self.slider = Slider(
                     self.WINDOW,
                     round(self.SCREEN_SIZE[0]/40), # x
-                    round(self.SCREEN_SIZE[1]-self.SCREEN_SIZE[1]/20), # y
+                    round(self.SCREEN_SIZE[1]-self.SCREEN_SIZE[1]/15), # y
                     round(self.SCREEN_SIZE[0]-self.SCREEN_SIZE[0]/20), # width
-                    round(self.SCREEN_SIZE[1]/30), # height
+                    round(self.SCREEN_SIZE[1]/20), # height
                     min=0,
                     max=self.NUM_OF_SHAPES-3,
                     step=1,
@@ -58,7 +59,7 @@ class Window():
         self.label_names_box = TextBox(
                     self.WINDOW,
                     round(self.CENTER[0]-self.CENTER[0]/7),
-                    round(self.SCREEN_SIZE[1]/5),
+                    0,
                     round(self.SCREEN_SIZE[0]/7),
                     round(self.SCREEN_SIZE[1]/30),
                     fontSize=round(self.SCREEN_SIZE[0]/60)
@@ -82,17 +83,17 @@ class Window():
         self.side_amount_output_box = TextBox(
                     self.WINDOW,
                     self.CENTER[0]-self.CENTER[1]/30,
-                    self.SCREEN_SIZE[1]-self.SCREEN_SIZE[1]/7.5,
+                    self.SCREEN_SIZE[1]-self.SCREEN_SIZE[1]/9,
                     self.SCREEN_SIZE[0]/30,
-                    self.SCREEN_SIZE[1]/50,
+                    self.SCREEN_SIZE[1]/30,
                     fontSize=round(self.SCREEN_SIZE[0]/64)
                 )
         self.radius_box = TextBox(
                     self.WINDOW,
-                    self.CENTER[0]+self.CENTER[0]/20,
+                    self.CENTER[0]+self.CENTER[0]/15,
                     self.CENTER[1]+self.CENTER[1]/100,
                     self.SCREEN_SIZE[0]/30,
-                    self.SCREEN_SIZE[0]/70,
+                    self.SCREEN_SIZE[1]/40,
                     fontSize=round(self.SCREEN_SIZE[0]/76)
                 )
         self.theta_box = TextBox(
@@ -157,6 +158,20 @@ class Window():
                         ((self.adjusted_vertices[0][-1][0]+self.adjusted_vertices[0][0][0])/2,(self.adjusted_vertices[0][-1][1]+self.adjusted_vertices[0][0][1])/2),
                         self.LINE_WIDTH
                     )
+        PYGAME.draw.arc( # Theta angle
+                        self.WINDOW,
+                        self.INNER_COLOUR,
+                        (bounding_box := ([i-self.SCALE/12 for i in self.CENTER], [self.SCALE/6,self.SCALE/6])),
+                        0,
+                        math.radians(180/(self.active_polygon_index+3)),
+                        round(self.LINE_WIDTH/2)
+                    )
+        # PYGAME.draw.rect( # Theta angle bounding box
+        #                 self.WINDOW,
+        #                 self.INNER_COLOUR,
+        #                 bounding_box,
+        #                 1
+        #             )
         PYGAME.draw.polygon( # Inner polygon
                         self.WINDOW, # Surface
                         self.INNER_COLOUR, # Colour
