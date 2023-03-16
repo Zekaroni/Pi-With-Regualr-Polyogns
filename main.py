@@ -23,6 +23,7 @@ del __found_pygame, __found_pygame_widgets, system
 import math
 from pygame_widgets.slider import Slider
 from pygame_widgets.textbox import TextBox
+from pygame_widgets.button import Button
 
 from classes.pi import PiFromPolygons as CreatePolygon
 
@@ -36,7 +37,7 @@ class Window():
         self.CIRCLE_COLOUR = (0,0,0)
         self.LINE_WIDTH = 3
         PYGAME.init()
-        self.WINDOW = PYGAME.display.set_mode((0,0),PYGAME.FULLSCREEN)
+        self.WINDOW = PYGAME.display.set_mode((0,0), PYGAME.FULLSCREEN)
         self.SCREEN_SIZE = self.WINDOW.get_size() # Assumes the user will not change the size of the window
         self.CENTER = (self.SCREEN_SIZE[0]/2, self.SCREEN_SIZE[1]/2) # Center of the screen
         self.SCALE = round(self.SCREEN_SIZE[0]/8)
@@ -103,6 +104,20 @@ class Window():
                     self.SCREEN_SIZE[0]/23,
                     self.SCREEN_SIZE[0]/70,
                     fontSize=round(self.SCREEN_SIZE[0]/76)
+                )
+        self.exit_button = Button(
+                    self.WINDOW,
+                    self.SCREEN_SIZE[0]-self.SCREEN_SIZE[0]/9.5,
+                    self.SCREEN_SIZE[1]/100,
+                    self.SCREEN_SIZE[0]/10,
+                    self.SCREEN_SIZE[1]/10,
+                    text='Exit',
+                    fontSize=round(self.SCREEN_SIZE[0]/30),
+                    inactiveColour=self.OUTER_COLOUR,  # Colour of button when not being interacted with
+                    hoverColour=self.INNER_COLOUR,  # Colour of button when being hovered over
+                    pressedColour=(0, 200, 20),  # Colour of button when being clicked
+                    radius=round(self.SCREEN_SIZE[0]/480),
+                    onClick=lambda: exit()  # Function to call when clicked on
                 )
         
         self.label_names_box.disable() # Act as label instead of textbox
