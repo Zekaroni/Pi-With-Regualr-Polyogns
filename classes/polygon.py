@@ -1,4 +1,4 @@
-import math
+from math import cos, pi, radians, sin, sqrt
 
 class RegularPolygon:
     def __init__(self, num_sides, x, y):
@@ -8,9 +8,9 @@ class RegularPolygon:
     @property
     def area(self):
         x, y = self._vertices[0]
-        hyp = math.sqrt(x ** 2 + y ** 2)
-        angle = math.pi / self._num_sides
-        area = self._num_sides * (hyp ** 2) * math.sin(angle) * math.cos(angle)
+        hyp = sqrt(x ** 2 + y ** 2)
+        angle = pi / self._num_sides
+        area = self._num_sides * (hyp ** 2) * sin(angle) * cos(angle)
         return area
 
     @property
@@ -24,7 +24,7 @@ class RegularPolygon:
         
     @staticmethod
     def rotate(x, y, angle):
-        angle = math.radians(angle)
-        rotated_x = math.cos(angle) * x - math.sin(angle) * y
-        rotated_y = math.sin(angle) * x + math.cos(angle) * y
+        angle = radians(angle)
+        rotated_x = cos(angle) * x - sin(angle) * y
+        rotated_y = sin(angle) * x + cos(angle) * y
         return rotated_x, rotated_y
