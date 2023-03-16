@@ -158,6 +158,20 @@ class Window():
                         self.SCALE,
                         1 
                     )
+        PYGAME.draw.arc( # Theta angle
+                        self.WINDOW,
+                        self.CIRCLE_COLOUR,
+                        (bounding_box := ([i-self.SCALE/12 for i in self.CENTER], [self.SCALE/6,self.SCALE/6])),
+                        0,
+                        (180/(self.active_polygon_index+3))*3.14159265/180,
+                        round(self.LINE_WIDTH/2)
+                    )
+        # PYGAME.draw.rect( # Theta angle bounding box
+        #                 self.WINDOW,
+        #                 self.INNER_COLOUR,
+        #                 bounding_box,
+        #                 1
+        #             )
         PYGAME.draw.line( # Radius
                         self.WINDOW,
                         self.CIRCLE_COLOUR,
@@ -172,20 +186,7 @@ class Window():
                         ((self.adjusted_vertices[0][-1][0]+self.adjusted_vertices[0][0][0])/2,(self.adjusted_vertices[0][-1][1]+self.adjusted_vertices[0][0][1])/2),
                         self.LINE_WIDTH
                     )
-        PYGAME.draw.arc( # Theta angle
-                        self.WINDOW,
-                        self.INNER_COLOUR,
-                        (bounding_box := ([i-self.SCALE/12 for i in self.CENTER], [self.SCALE/6,self.SCALE/6])),
-                        0,
-                        (180/(self.active_polygon_index+3))*3.14159265/180,
-                        round(self.LINE_WIDTH/2)
-                    )
-        # PYGAME.draw.rect( # Theta angle bounding box
-        #                 self.WINDOW,
-        #                 self.INNER_COLOUR,
-        #                 bounding_box,
-        #                 1
-        #             )
+        
         PYGAME.draw.polygon( # Inner polygon
                         self.WINDOW, # Surface
                         self.INNER_COLOUR, # Colour
