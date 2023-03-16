@@ -20,7 +20,6 @@ if not __found_pygame: system('pip install pygame'); import pygame as PYGAME
 if not __found_pygame_widgets: system('pip install pygame_widgets'); import pygame_widgets
 del __found_pygame, __found_pygame_widgets, system
 
-import math
 from pygame_widgets.slider import Slider
 from pygame_widgets.textbox import TextBox
 from pygame_widgets.button import Button
@@ -178,7 +177,7 @@ class Window():
                         self.INNER_COLOUR,
                         (bounding_box := ([i-self.SCALE/12 for i in self.CENTER], [self.SCALE/6,self.SCALE/6])),
                         0,
-                        math.radians(180/(self.active_polygon_index+3)),
+                        (180/(self.active_polygon_index+3))*3.14159265/180,
                         round(self.LINE_WIDTH/2)
                     )
         # PYGAME.draw.rect( # Theta angle bounding box
