@@ -57,10 +57,11 @@ class Window():
                 )
         self.label_names_box = TextBox(
                     self.WINDOW,
+                    # TODO: REWORKING ALL THE UI COMPONENTS
                     round(self.CENTER[0]-self.CENTER[0]/7),
-                    0,
+                    round(self.SCREEN_SIZE[1]/5),
                     round(self.SCREEN_SIZE[0]/7),
-                    round(self.SCREEN_SIZE[0]/50),
+                    round(self.SCREEN_SIZE[1]/30),
                     fontSize=round(self.SCREEN_SIZE[0]/60)
                 )
         self.inbtween_values_box = TextBox(
@@ -68,15 +69,15 @@ class Window():
                     round(self.CENTER[0]-self.CENTER[0]/7.75),
                     round(self.SCREEN_SIZE[1]/30),
                     round(self.SCREEN_SIZE[0]/7.75),
-                    round(self.SCREEN_SIZE[0]/50),
+                    round(self.SCREEN_SIZE[1]/30),
                     fontSize=round(self.SCREEN_SIZE[0]/64)
                 )
         self.pi_average_box = TextBox(
                     self.WINDOW,
-                    round(self.SCREEN_SIZE[0]/2)-round((self.SCREEN_SIZE[0]/10)/2),
+                    round(self.CENTER[0]-self.CENTER[0]/10),
                     round(self.SCREEN_SIZE[1]/15),
                     self.SCREEN_SIZE[0]/10,
-                    self.SCREEN_SIZE[0]/50,
+                    self.SCREEN_SIZE[1]/30,
                     fontSize=round(self.SCREEN_SIZE[0]/64)
                 )
         self.side_amount_output_box = TextBox(
@@ -84,7 +85,7 @@ class Window():
                     self.CENTER[0]-self.CENTER[1]/30,
                     self.SCREEN_SIZE[1]-self.SCREEN_SIZE[1]/7.5,
                     self.SCREEN_SIZE[0]/30,
-                    self.SCREEN_SIZE[0]/50,
+                    self.SCREEN_SIZE[1]/50,
                     fontSize=round(self.SCREEN_SIZE[0]/64)
                 )
         self.radius_box = TextBox(
