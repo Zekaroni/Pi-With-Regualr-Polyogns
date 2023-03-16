@@ -4,7 +4,6 @@ class RegularPolygon:
     def __init__(self, num_sides, x, y):
         self._num_sides = num_sides
         self._vertices = [(x, y)]
-        pass
 
     @property
     def area(self):

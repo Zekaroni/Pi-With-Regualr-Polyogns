@@ -57,7 +57,6 @@ class Window():
                 )
         self.label_names_box = TextBox(
                     self.WINDOW,
-                    # TODO: REWORKING ALL THE UI COMPONENTS
                     round(self.CENTER[0]-self.CENTER[0]/7),
                     round(self.SCREEN_SIZE[1]/5),
                     round(self.SCREEN_SIZE[0]/7),
