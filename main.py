@@ -114,9 +114,8 @@ class Window():
                     fontSize=round(self.SCREEN_SIZE[0]/30),
                     inactiveColour=self.OUTER_COLOUR,  # Colour of button when not being interacted with
                     hoverColour=self.INNER_COLOUR,  # Colour of button when being hovered over
-                    pressedColour=(0, 200, 20),  # Colour of button when being clicked
                     radius=round(self.SCREEN_SIZE[0]/480),
-                    onClick=lambda: exit()  # Function to call when clicked on
+                    onClick=lambda: exit()
                 )
         
         self.label_names_box.disable() # Act as label instead of textbox
